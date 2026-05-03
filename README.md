@@ -34,7 +34,7 @@ Nền tảng web quản lý chuỗi cửa hàng cà phê — hỗ trợ đặt h
 Yêu cầu: **Git** và **Docker Desktop**.
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/tqtrong28/KACoffee.git
 cd kacoffee
 docker compose up --build
 ```
