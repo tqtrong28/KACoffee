@@ -1,0 +1,67 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: kacoffee-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: kacoffee
+      MYSQL_USER: kacoffee
+      MYSQL_PASSWORD: kacoffee123
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: kacoffee-backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      APP_NAME: KACoffee API
+      DEBUG: "false"
+      DATABASE_HOST: mysql
+      DATABASE_PORT: 3306
+      DATABASE_NAME: kacoffee
+      DATABASE_USER: kacoffee
+      DATABASE_PASSWORD: kacoffee123
+      DATABASE_CHARSET: utf8mb4
+      AUTO_INIT_DB_ON_STARTUP: "false"
+      AUTO_SEED_ON_STARTUP: "false"
+      RUN_LEGACY_COMPAT_MIGRATIONS: "false"
+      JWT_SECRET_KEY: change-me-in-production
+      ACCESS_TOKEN_EXPIRE_MINUTES: 60
+      REFRESH_TOKEN_EXPIRE_DAYS: 14
+      DEFAULT_ADMIN_USERNAME: admin
+      DEFAULT_ADMIN_PASSWORD: admin123
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: /api/v1
+    container_name: kacoffee-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+
+volumes:
+  mysql_data:

@@ -1,0 +1,1 @@
+"""KACoffee backend application package."""
