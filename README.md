@@ -1,7 +1,7 @@
 
 # KACoffee
 
-Nền tảng web quản lý chuỗi cửa hàng cà phê — hỗ trợ đặt hàng online, bán tại quán (POS), quản lý giao hàng, chương trình thành viên tích điểm và báo cáo doanh thu.
+Nền tảng web quản lý chuỗi cửa hàng cà phê — hỗ trợ đặt hàng online, bán tại quán (POS), quản lý giao hàng, chương trình thành viên tích điểm và báo cáo doanh thu. Chi tiết có thể tải KACoffee_UseCases.html ở trong folder về xem nội dung .
 
 ## Tính năng
 
